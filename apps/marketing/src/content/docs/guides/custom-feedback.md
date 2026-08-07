@@ -8,7 +8,7 @@ section: "Guides"
 
 Every time you approve a plan, deny it with feedback, annotate a file, or finish a code review, Plannotator sends a message to the agent. These messages are what the agent actually sees and acts on. By default they work well, but you can change any of them to match how you want your agent to behave.
 
-All customization happens in `~/.plannotator/config.json` under the `prompts` key. No restart needed. Changes take effect the next time a feedback message is generated. You can set overrides that apply globally, or target a specific agent runtime (Claude Code, OpenCode, Pi, etc.) with [runtime-specific overrides](#runtime-specific-overrides).
+All customization happens in `~/.plannotator/config.json` under the `prompts` key. No restart needed. Changes take effect the next time a feedback message is generated. You can set overrides that apply globally, or target a specific agent runtime (Claude Code, OpenCode, Pi, Oh My Pi, etc.) with [runtime-specific overrides](#runtime-specific-overrides).
 
 ## Quick example
 
@@ -84,9 +84,9 @@ If you use a `{{variable}}` that doesn't exist for that message type, it stays i
 
 ## Runtime-specific overrides
 
-Different agent runtimes (Claude Code, OpenCode, Pi, Gemini CLI, etc.) sometimes need different messages. For example, OpenCode's plan approval is shorter because the agent already knows it has tool access.
+Different agent runtimes (Claude Code, OpenCode, Pi, Oh My Pi, Gemini CLI, etc.) sometimes need different messages. For example, OpenCode's plan approval is shorter because the agent already knows it has tool access.
 
-You can override a message for a specific runtime using the `runtimes` key:
+For Oh My Pi, put the override under the literal `oh-my-pi` runtime key:
 
 ```json
 {
@@ -99,6 +99,9 @@ You can override a message for a specific runtime using the `runtimes` key:
         },
         "opencode": {
           "denied": "Plan rejected. Fix the following and call {{toolName}}:\n\n{{feedback}}"
+        },
+        "oh-my-pi": {
+          "denied": "Oh My Pi plan feedback:\n\n{{feedback}}"
         }
       }
     }
@@ -111,10 +114,10 @@ The resolution order is:
 1. Runtime-specific config override (e.g., `prompts.plan.runtimes.opencode.denied`)
 2. Generic config override (e.g., `prompts.plan.denied`)
 3. Built-in default (some prompts have runtime-specific built-in defaults, like OpenCode's shorter plan approval)
+Valid runtime keys: `claude-code`, `amp`, `droid`, `opencode`, `copilot-cli`, `pi`, `oh-my-pi`, `codex`, `gemini-cli`.
 
 Blank or whitespace-only values are treated as "not set" and fall through to the next level. This means you can clear a runtime override by setting it to `""` without affecting others.
 
-Valid runtime keys: `claude-code`, `amp`, `droid`, `opencode`, `copilot-cli`, `pi`, `codex`, `gemini-cli`.
 
 ## Full config example
 

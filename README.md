@@ -214,6 +214,7 @@ Then finish the step for your agent:
 | **Kiro CLI** | Nothing. Skills and an example agent are installed automatically. Try `kiro-cli chat --agent plannotator`. | [README](apps/kiro-cli/README.md) |
 | **OpenCode** | Add `"plugin": ["@plannotator/opencode@latest"]` to `opencode.json`. Restart OpenCode. | [README](apps/opencode-plugin/README.md) |
 | **Pi** | Skip the installer. Just `pi install npm:@plannotator/pi-extension`. Start Pi with `--plan`, or toggle with `/plannotator`. | [README](apps/pi-extension/README.md) |
+| **Oh My Pi** | Skip the installer. Install `omp install npm:@plannotator/oh-my-pi-extension`, then start with `--plan`. | [README](apps/oh-my-pi-extension/README.md) |
 
 Full walkthroughs live in the [installation docs](https://docs.plannotator.ai/open-source/start/installation).
 

@@ -6,9 +6,11 @@ import { isWindows } from '../utils/platform';
 import { copyTextToClipboard } from '../utils/clipboard';
 
 const PI_INSTALL_COMMAND = 'pi install npm:@plannotator/pi-extension';
+const OMP_INSTALL_COMMAND = 'omp install npm:@plannotator/oh-my-pi-extension';
 
 function getInstallCommand(origin?: Origin | null, isWSL = false): string {
   if (origin === 'pi') return PI_INSTALL_COMMAND;
+  if (origin === 'oh-my-pi') return OMP_INSTALL_COMMAND;
   return isWindows && !isWSL
     ? 'powershell -c "irm https://plannotator.ai/install.ps1 | iex"'
     : 'curl -fsSL https://plannotator.ai/install.sh | bash';

@@ -1,6 +1,6 @@
 ---
 title: "Installation"
-description: "How to install Plannotator for Claude Code, Codex, OpenCode, Kiro CLI, Pi, Amp, Droid, and other agent hosts."
+description: "How to install Plannotator for Claude Code, Codex, OpenCode, Kiro CLI, Pi, Oh My Pi, Amp, Droid, and other agent hosts."
 sidebar:
   order: 1
 section: "Getting Started"
@@ -383,6 +383,51 @@ pi -e npm:@plannotator/pi-extension
 Start plan mode with `pi --plan`, or toggle mid-session with `/plannotator` or `Ctrl+Alt+P`. The extension provides file-based plan review, code review (`/plannotator-review`), markdown annotation (`/plannotator-annotate`), bash safety gating during planning, and progress tracking during execution.
 
 See [Plannotator Meets Pi](/blog/plannotator-meets-pi) for the full walkthrough.
+
+## Oh My Pi
+
+Install Plannotator's native Oh My Pi extension with Oh My Pi's package manager:
+
+```bash
+omp install npm:@plannotator/oh-my-pi-extension
+```
+
+Try a source checkout without installing it:
+
+```bash
+omp --extension ./apps/oh-my-pi-extension --plan
+```
+
+The extension replaces only Oh My Pi's native `Plan mode - next step` review
+surface. Oh My Pi keeps ownership of the `local://` plan artifact, plan-mode
+exit, tool restoration, and execution. If the browser cannot start, Plannotator
+warns and falls back to the original native review.
+
+It adds `/plannotator-review`, `/plannotator-annotate`, and `/plannotator-last`.
+Examples:
+
+```text
+/plannotator-review
+/plannotator-review https://github.com/owner/repo/pull/123
+/plannotator-review --git
+/plannotator-review --gitbutler
+/plannotator-annotate README.md --gate
+/plannotator-annotate docs/guide.html --markdown
+/plannotator-last --gate
+```
+
+Ask AI uses only the Oh My Pi session's enabled/scoped models and starts
+`omp --mode rpc` for queries. Credentials stay with the spawned Oh My Pi
+process; they are not sent to the browser. See the
+[Oh My Pi extension README](https://github.com/backnotprop/plannotator/tree/main/apps/oh-my-pi-extension)
+for command flags, the `plannotator-events` request API, updates, and removal.
+
+Update and uninstall with:
+
+```bash
+omp plugin upgrade @plannotator/oh-my-pi-extension
+omp plugin uninstall @plannotator/oh-my-pi-extension
+```
 
 ## Amp
 

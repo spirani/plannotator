@@ -30,6 +30,7 @@ export type PromptRuntime =
   | "opencode"
   | "copilot-cli"
   | "pi"
+  | "oh-my-pi"
   | "codex"
   | "gemini-cli";
 

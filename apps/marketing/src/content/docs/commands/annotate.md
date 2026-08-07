@@ -34,6 +34,26 @@ Beyond `.md`, `.mdx`, `.txt`, `.html`, and `.htm`, annotate accepts common plain
 
 The agent runs `plannotator annotate <arg>` under the hood. The annotation UI opens in the browser. When you submit, feedback is returned to the agent as structured output.
 
+### Oh My Pi
+
+In an Oh My Pi session, `/plannotator-annotate` is handled by the
+`@plannotator/oh-my-pi-extension` extension. It accepts a file, folder, URL, or
+one target selected from surrounding words:
+
+```text
+/plannotator-annotate README.md
+/plannotator-annotate docs/ --gate
+/plannotator-annotate https://example.com/spec --no-jina
+```
+
+The browser result is returned as an Oh My Pi follow-up message only when
+feedback is non-empty. `--json` and `--hook` are accepted for command parity;
+they do not print a second stdout protocol in an interactive Oh My Pi session.
+`--hook` implies `--gate`; `--markdown` converts local HTML and `--render-html`
+keeps it raw. The command uses the active Oh My Pi model scope for Ask AI and
+starts `omp` for the query; it does not discover or expose a standalone Pi
+installation.
+
 You do not have to pass a bare path. Extra words around a path are fine (`/plannotator-annotate look at docs/spec.md please` opens `docs/spec.md`), and a purely natural-language request (`/plannotator-annotate the aim doc`) hands off to the agent, which works out the file you mean and re-runs the command with a concrete target. If several of your words each name a real file, Plannotator errors and lists the candidates instead of guessing, so name exactly one target per invocation.
 
 ### Standalone CLI (outside an agent session)
@@ -160,7 +180,7 @@ This is the recommended flag for hook integrations. If both `--hook` and `--json
 
 **Key property:** `--gate` plaintext output is unambiguous across three decisions. Use `--json` when you want machine-readable decision objects. Use `--hook` when wiring into Claude Code or Codex hooks directly.
 
-On OpenCode and Pi, `--json` and `--hook` are silently accepted because those harnesses write back into the session directly rather than via stdout. The `--gate` flag behaves identically across all three harnesses.
+On OpenCode, Pi, and Oh My Pi, `--json` and `--hook` are silently accepted because those harnesses write back into the session directly rather than via stdout. The `--gate` flag behaves identically across these hosts.
 
 See [Hook integration recipes](/docs/guides/hook-integration/) for ready-to-use PostToolUse and Stop hook examples.
 

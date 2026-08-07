@@ -26,6 +26,23 @@ PR review uses the `gh` CLI for authentication, so private repos work automatica
 
 GitLab merge request URLs are also supported when the `glab` CLI is installed and authenticated.
 
+### Oh My Pi
+
+With the Oh My Pi extension installed, use the same command inside an OMP
+session:
+
+```text
+/plannotator-review
+/plannotator-review https://github.com/owner/repo/pull/123
+/plannotator-review --git
+/plannotator-review --gitbutler
+```
+
+`--git` forces ordinary Git review and `--gitbutler` forces the GitButler
+provider. The browser decision is sent back as an Oh My Pi follow-up. Ask AI
+uses only the session's enabled/scoped OMP models and spawns `omp`; credentials
+remain owned by the Oh My Pi process.
+
 ## How it works
 
 **Local review:**
@@ -129,10 +146,6 @@ The review UI shows your changes in a familiar diff format:
 The left panel has three views. The header toggle is session-scoped — glancing at another view never changes your saved default (that's a Settings / setup-dialog decision).
 
 - **Git status** (default) — your changes grouped the way `git status` groups them: **Committed / Changes / Untracked**. Each row shows viewed state, a stage/unstage button, the change-type letter, and +/- counts. Only available with the "All changes" diff.
-- **Tree** — the classic file tree over whichever diff type you've selected.
-- **Commits** — a linear history rail of your branch, newest first, with an "In origin/main" divider where your work meets the base. Clicking a commit opens that commit's own diff (vs its parent), headed by the full commit message. Local git sessions only; a commit is never saved as your opening view.
-
-## Annotating code
 
 Select any text in the diff to annotate it, just like in plan review. Your annotations are exported as structured feedback referencing specific lines and files.
 
@@ -147,9 +160,10 @@ Plannotator supports multiple AI providers. Providers are auto-detected based on
 - **Claude** requires the `claude` CLI ([Claude Code](https://docs.anthropic.com/en/docs/claude-code))
 - **Codex** requires the `codex` CLI ([OpenAI Codex](https://github.com/openai/codex))
 - **Pi** requires the `pi` CLI ([Pi](https://github.com/earendil-works/pi))
+- **Oh My Pi** uses the `omp` CLI and the model scope from the active Oh My Pi session
 - **OpenCode** requires the `opencode` CLI ([OpenCode](https://opencode.ai))
 
-All providers can be available simultaneously. Plannotator does not manage API keys, so you must be authenticated with each CLI independently (`claude` uses `~/.claude/` credentials, `codex` uses `OPENAI_API_KEY`, `pi` and `opencode` use their own local configuration).
+All providers can be available simultaneously. Plannotator does not manage API keys, so you must be authenticated with each CLI independently (`claude` uses `~/.claude/` credentials, `codex` uses `OPENAI_API_KEY`, `pi`, `omp`, and `opencode` use their own local configuration).
 
 ### Choosing a provider
 
@@ -199,7 +213,7 @@ Resolution order:
 2. `prompts.review.approved`
 3. Plannotator's built-in default
 
-Runtime keys use Plannotator's runtime identifiers. For code review, the current values are `claude-code`, `opencode`, `copilot-cli`, `pi`, and `codex`.
+Runtime keys use Plannotator's runtime identifiers. For code review, the current values are `claude-code`, `opencode`, `copilot-cli`, `pi`, `oh-my-pi`, and `codex`.
 
 ## Server API
 

@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "types": ["node"]
+  },
+  "include": [
+    "omp.ts",
+    "annotation-commands.ts",
+    "assistant-message.ts",
+    "annotate-outcome.ts",
+    "browser-session-error.ts",
+    "plannotator-browser.ts",
+    "plannotator-browser-runtime.ts",
+    "plannotator-events.ts",
+    "server.ts",
+    "server/**/*.ts"
+  ],
+  "exclude": ["**/*.test.ts"]
+}

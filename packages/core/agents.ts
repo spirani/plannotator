@@ -24,6 +24,7 @@ export const AGENT_CONFIG = {
   'opencode':    { name: 'OpenCode',    badge: 'bg-emerald-500/15 text-emerald-400', aiProviderTypes: ['opencode-sdk'] },
   'copilot-cli': { name: 'GitHub Copilot', badge: 'bg-blue-500/15 text-blue-400' },
   'pi':          { name: 'Pi',          badge: 'bg-violet-500/15 text-violet-400', aiProviderTypes: ['pi-sdk'] },
+  'oh-my-pi':    { name: 'Oh My Pi',    badge: 'bg-indigo-500/15 text-indigo-400', aiProviderTypes: ['pi-sdk'] },
   'codex':       { name: 'Codex',       badge: 'bg-purple-500/15 text-purple-400', aiProviderTypes: ['codex-sdk'] },
   'gemini-cli':  { name: 'Gemini CLI', badge: 'bg-sky-500/15 text-sky-400' },
 } as const satisfies Record<string, AgentConfigEntry>;

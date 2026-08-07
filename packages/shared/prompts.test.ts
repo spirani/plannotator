@@ -98,6 +98,18 @@ describe("getPlanDeniedPrompt", () => {
     expect(result).toBe("OC denial: nope");
   });
 
+  test("supports an Oh My Pi runtime-specific override", () => {
+    const result = getPlanDeniedPrompt("oh-my-pi", {
+      prompts: {
+        plan: {
+          denied: "Generic: {{feedback}}",
+          runtimes: { "oh-my-pi": { denied: "OMP: {{feedback}}" } },
+        },
+      },
+    }, { feedback: "revise this" });
+    expect(result).toBe("OMP: revise this");
+  });
+
   test("interpolates {{toolName}}, {{feedback}}, {{planFileRule}}", () => {
     const result = getPlanDeniedPrompt(null, {}, {
       toolName: "submit_plan",

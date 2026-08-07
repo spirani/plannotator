@@ -28,6 +28,20 @@ The `/plannotator-last` command opens the agent's most recent response in the an
 /plannotator-last
 ```
 
+
+### Oh My Pi
+
+```text
+/plannotator-last
+/plannotator-last --gate
+```
+
+The Oh My Pi extension reads the newest assistant message from the active
+session branch and can offer a picker of up to 25 recent assistant messages.
+Non-empty feedback is delivered as an Oh My Pi follow-up; an empty branch
+produces `No assistant message found in session.`. The extension does not
+reroute the command to another session or add stale-session quote anchors.
+
 ### Codex
 
 ```
@@ -61,6 +75,7 @@ Each harness reads the last assistant message differently:
 | **Claude Code** | `~/.claude/projects/{slug}/*.jsonl` | Parses JSONL session logs, finds last assistant text blocks |
 | **OpenCode** | SDK | `client.session.messages()` API |
 | **Pi** | SDK | `ctx.sessionManager.getEntries()` API |
+| **Oh My Pi** | SDK | Active `ctx.sessionManager.getBranch()` API |
 | **Codex** | `~/.codex/sessions/` rollout files | Parses JSONL by `CODEX_THREAD_ID` env var |
 
 For Claude Code, the parser handles streamed chunks (multiple JSONL lines sharing the same `message.id`), filters out system-generated user messages, and skips noise entries. If the most recent session log has no assistant messages, it tries earlier logs sorted by modification time.
@@ -75,7 +90,7 @@ The annotation UI in `annotate-last` mode works the same as `/plannotator-annota
 
 ## Flags
 
-`plannotator annotate-last` accepts the same `--gate`, `--json`, and `--hook` flags as `plannotator annotate`. See [Annotate → Flags](/docs/commands/annotate/#flags) for the full matrix.
+`plannotator annotate-last` accepts the same `--gate`, `--json`, and `--hook` flags as `plannotator annotate`. In Oh My Pi, `--json` and `--hook` are accepted for host parity and feedback is delivered through the extension session rather than stdout. See [Annotate → Flags](/docs/commands/annotate/#flags) for the full matrix.
 
 The common use case for `--gate` on annotate-last is a turn-by-turn review gate wired to a Stop hook:
 

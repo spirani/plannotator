@@ -22,6 +22,7 @@ export const PLAN_TOOL_NAMES: Record<PromptRuntime, string> = {
   opencode: "submit_plan",
   "copilot-cli": "exit_plan_mode",
   pi: "plannotator_submit_plan",
+  "oh-my-pi": "plan",
   codex: "ExitPlanMode",
   "gemini-cli": "exit_plan_mode",
 };
