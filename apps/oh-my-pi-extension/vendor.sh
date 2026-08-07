@@ -7,6 +7,10 @@ cd "$(dirname "$0")"
 rm -rf generated
 mkdir -p generated generated/ai/providers
 
+# Runtime implementation is source-only in the workspace and materialized
+# beneath the already shipped generated/ tree for raw-TypeScript execution.
+cp -R ../../packages/pi-extension/runtime generated/runtime
+
 # Modules that MOVED to @plannotator/core — vendor the real impl from core.
 for f in feedback-templates project favicon code-file annotatable external-annotation agent-jobs agent-terminal source-save open-in-apps; do
   src="../../packages/core/$f.ts"

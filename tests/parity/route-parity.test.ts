@@ -52,10 +52,10 @@ const bun = {
 };
 
 const pi = {
-  plan: join(ROOT, "apps/pi-extension/server/serverPlan.ts"),
-  review: join(ROOT, "apps/pi-extension/server/serverReview.ts"),
-  annotate: join(ROOT, "apps/pi-extension/server/serverAnnotate.ts"),
-  editorAnnotations: join(ROOT, "apps/pi-extension/server/annotations.ts"),
+  plan: join(ROOT, "packages/pi-extension/runtime/server/serverPlan.ts"),
+  review: join(ROOT, "packages/pi-extension/runtime/server/serverReview.ts"),
+  annotate: join(ROOT, "packages/pi-extension/runtime/server/serverAnnotate.ts"),
+  editorAnnotations: join(ROOT, "packages/pi-extension/runtime/server/annotations.ts"),
 };
 
 const aiEndpointsFile = join(ROOT, "packages/ai/endpoints.ts");

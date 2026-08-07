@@ -1,16 +1,19 @@
 import { afterEach, describe, expect, test } from "bun:test";
 import { createServer } from "node:http";
-import { closeServer, occupyConsecutivePorts } from "../../../tests/helpers/ports.ts";
-import {
-	getServerHostname,
-	getServerPort,
-	getServerPorts,
-	isNoOpBrowserSentinel,
-	isRemoteSession,
-	listenOnPort,
-	openBrowser,
-} from "./network.ts";
+import { closeServer, occupyConsecutivePorts } from "../helpers/ports.ts";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
+export function registerNetworkSuite(target: ExtensionRuntimeTarget): void {
+	const {
+		getServerHostname,
+		getServerPort,
+		getServerPorts,
+		isNoOpBrowserSentinel,
+		isRemoteSession,
+		listenOnPort,
+		openBrowser,
+	} = target.network;
+	describe(target.label, () => {
 const savedEnv: Record<string, string | undefined> = {};
 const envKeys = [
 	"PLANNOTATOR_REMOTE",
@@ -282,3 +285,6 @@ describe("pi browser no-op sentinels", () => {
 		});
 	});
 });
+
+	});
+}

@@ -1,14 +1,17 @@
-import { afterEach, describe, expect, test } from 'bun:test';
-import { mkdtempSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { afterEach, describe, expect, test } from "bun:test";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import type {
-  PRMetadata,
-  PRReviewFileComment,
-  PRReviewSubmissionResult,
-} from './generated/pr-types.ts';
-import { startReviewServer } from './server/serverReview.ts';
+	PRMetadata,
+	PRReviewFileComment,
+	PRReviewSubmissionResult,
+} from "../../apps/pi-extension/generated/pr-types.ts";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
+export function registerServerReviewPrActionSuite(target: ExtensionRuntimeTarget): void {
+	const { startReviewServer } = target.serverReview;
+	describe(target.label, () => {
 const originalAI = process.env.PLANNOTATOR_AI;
 const originalDataDir = process.env.PLANNOTATOR_DATA_DIR;
 const originalPath = process.env.PATH;
@@ -150,3 +153,6 @@ describe('Pi /api/pr-action submission contract', () => {
     );
   });
 });
+
+	});
+}

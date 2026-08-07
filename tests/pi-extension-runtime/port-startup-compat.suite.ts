@@ -1,9 +1,12 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { createTestEnvironment } from "../../../tests/helpers/environment.ts";
-import { closeServer, occupyConsecutivePorts } from "../../../tests/helpers/ports.ts";
-import { openBrowser } from "./network.ts";
-import { startPlanReviewServer } from "./serverPlan.ts";
+import { createTestEnvironment } from "../helpers/environment.ts";
+import { closeServer, occupyConsecutivePorts } from "../helpers/ports.ts";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
+export function registerPortStartupCompatSuite(target: ExtensionRuntimeTarget): void {
+	const { openBrowser } = target.network;
+	const { startPlanReviewServer } = target.serverPlan;
+	describe(target.label, () => {
 const envKeys = [
 	"PLANNOTATOR_PORT",
 	"PLANNOTATOR_REMOTE",
@@ -67,3 +70,6 @@ describe("Pi startup port compatibility", () => {
 		}
 	});
 });
+
+	});
+}

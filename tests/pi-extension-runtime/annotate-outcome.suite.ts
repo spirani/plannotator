@@ -1,6 +1,9 @@
 import { describe, expect, test } from "bun:test";
-import { classifyAnnotateOutcome } from "./annotate-outcome.ts";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
+export function registerAnnotateOutcomeSuite(target: ExtensionRuntimeTarget): void {
+	const { classifyAnnotateOutcome } = target.annotateOutcome;
+	describe(target.label, () => {
 describe("Pi annotate outcomes", () => {
   test("delivers approved file feedback before the approval notification", () => {
     expect(classifyAnnotateOutcome({
@@ -49,3 +52,6 @@ describe("Pi annotate outcomes", () => {
     });
   });
 });
+
+	});
+}

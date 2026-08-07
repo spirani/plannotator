@@ -1,7 +1,10 @@
-import { expect, test } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
+export function registerImportSpecifiersSuite(target: ExtensionRuntimeTarget): void {
+	describe(target.label, () => {
 /**
  * This package is distributed and executed as raw TypeScript through jiti
  * (and Bun in tests). A relative ".js" specifier names a file that never
@@ -15,7 +18,7 @@ import { join } from "node:path";
  * this test enforces it for hand-written sources.
  */
 
-const ROOT = import.meta.dir;
+const ROOT = target.extensionRoot;
 const SKIP_DIRS = new Set(["node_modules", "dist", ".git"]);
 const RELATIVE_SPECIFIER =
   /(?:from\s+|import\s*\(\s*|import\s+)(["'])(\.\.?\/[^"']+)\1/g;
@@ -49,3 +52,6 @@ test("relative import specifiers name the .ts files that actually ship", () => {
   }
   expect(offenders).toEqual([]);
 });
+
+	});
+}

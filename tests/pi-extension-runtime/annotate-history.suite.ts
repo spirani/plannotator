@@ -1,3 +1,13 @@
+import { afterAll, afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
+
+export function registerAnnotateHistorySuite(target: ExtensionRuntimeTarget): void {
+	const { startAnnotateServer } = target.server;
+	const { deriveAnnotateHistorySlug, getPlannotatorDataDir } = target;
+	describe(target.label, () => {
 /**
  * Annotate server (Pi/Node): folder annotate version history
  *
@@ -15,13 +25,6 @@
  * approach as the Bun-side suite) so runs never collide.
  */
 
-import { afterAll, afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { startAnnotateServer } from "./serverAnnotate.ts";
-import { deriveAnnotateHistorySlug } from "../generated/annotate-history.ts";
-import { getPlannotatorDataDir } from "../generated/data-dir.ts";
 
 describe("pi annotate server: folder annotate history", () => {
 	let savedPort: string | undefined;
@@ -423,3 +426,6 @@ describe("pi annotate server: folder annotate history", () => {
 		}
 	});
 });
+
+	});
+}

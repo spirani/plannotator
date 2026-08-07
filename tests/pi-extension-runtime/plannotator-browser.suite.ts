@@ -1,33 +1,34 @@
-// Remote mode suppresses the browser launch so these tests never spawn the
-// developer's browser or read their ~/.plannotator config. BROWSER overrides
-// bypass the remote-mode suppression, so they are cleared too. (env reads
-// happen at call time, so setting these before the tests run is sufficient.)
-// Restored in afterAll: bun test shares one process across files, and other
-// suites assert non-remote behavior.
-const savedEnv = {
-	PLANNOTATOR_REMOTE: process.env.PLANNOTATOR_REMOTE,
-	PLANNOTATOR_BROWSER: process.env.PLANNOTATOR_BROWSER,
-	BROWSER: process.env.BROWSER,
-};
-process.env.PLANNOTATOR_REMOTE = "1";
-delete process.env.PLANNOTATOR_BROWSER;
-delete process.env.BROWSER;
+import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
-import { afterAll, describe, expect, test } from "bun:test";
-import {
-	getActiveBrowserSessionCount,
-	shouldUseLocalPrCheckout,
-	startBrowserDecisionSession,
-	startServerWithSelfPreemption,
-	stopAllBrowserDecisionSessions,
-} from "./plannotator-browser.ts";
-
-afterAll(() => {
-	for (const [key, value] of Object.entries(savedEnv)) {
-		if (value === undefined) delete process.env[key];
-		else process.env[key] = value;
-	}
-});
+export function registerPlannotatorBrowserSuite(target: ExtensionRuntimeTarget): void {
+	const {
+		getActiveBrowserSessionCount,
+		shouldUseLocalPrCheckout,
+		startBrowserDecisionSession,
+		startServerWithSelfPreemption,
+		stopAllBrowserDecisionSessions,
+	} = target.browser;
+	describe(target.label, () => {
+		// Remote mode suppresses browser launches; restore it after every test so
+		// another target's server contract never inherits this suite's process state.
+		let savedEnv: Record<string, string | undefined>;
+		beforeEach(() => {
+			savedEnv = {
+				PLANNOTATOR_REMOTE: process.env.PLANNOTATOR_REMOTE,
+				PLANNOTATOR_BROWSER: process.env.PLANNOTATOR_BROWSER,
+				BROWSER: process.env.BROWSER,
+			};
+			process.env.PLANNOTATOR_REMOTE = "1";
+			delete process.env.PLANNOTATOR_BROWSER;
+			delete process.env.BROWSER;
+		});
+		afterEach(() => {
+			for (const [key, value] of Object.entries(savedEnv)) {
+				if (value === undefined) delete process.env[key];
+				else process.env[key] = value;
+			}
+		});
 
 describe("shouldUseLocalPrCheckout", () => {
 	test("uses local PR checkout by default", () => {
@@ -195,3 +196,6 @@ describe("browser session cleanup", () => {
 		expect(getActiveBrowserSessionCount()).toBe(0);
 	});
 });
+
+	});
+}

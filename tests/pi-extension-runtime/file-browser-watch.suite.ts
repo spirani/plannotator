@@ -3,12 +3,15 @@ import { chmodSync, mkdirSync, mkdtempSync, renameSync, rmSync, statSync, unlink
 import { createServer, type Server } from "node:http";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import {
-	createExactFileWatchListener,
-	handleFileBrowserStreamRequest,
-	isFileBrowserWatchIgnoredPath,
-} from "./file-browser-watch.ts";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
+export function registerFileBrowserWatchSuite(target: ExtensionRuntimeTarget): void {
+	const {
+		createExactFileWatchListener,
+		handleFileBrowserStreamRequest,
+		isFileBrowserWatchIgnoredPath,
+	} = target.fileBrowserWatch;
+	describe(target.label, () => {
 const tempDirs: string[] = [];
 const servers: Server[] = [];
 const WATCH_READY_MS = 250;
@@ -362,3 +365,6 @@ describe("Pi file browser watcher", () => {
 		}
 	});
 });
+
+	});
+}

@@ -1,9 +1,12 @@
 import { describe, expect, test } from "bun:test";
 import { createServer } from "node:http";
-import { AGENT_TERMINAL_WS_BASE_PATH } from "../generated/agent-terminal.ts";
-import { createNodeAgentTerminalBridge, normalizeSpawnOptions } from "./agent-terminal.ts";
-import { startAnnotateServer } from "./serverAnnotate.ts";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
+export function registerAgentTerminalSuite(target: ExtensionRuntimeTarget): void {
+	const { createNodeAgentTerminalBridge, normalizeSpawnOptions } = target.agentTerminal;
+	const { startAnnotateServer } = target.server;
+	const { agentTerminalWsBasePath: AGENT_TERMINAL_WS_BASE_PATH } = target;
+	describe(target.label, () => {
 describe("pi annotate agent terminal capability", () => {
 	test("normalizes spawn options from the server-owned agent launch plan", () => {
 		const normalized = normalizeSpawnOptions(
@@ -159,5 +162,8 @@ function websocketRoundTrip(url: string, payload: unknown): Promise<string> {
 			clearTimeout(timer);
 			reject(new Error("WebSocket failed"));
 		};
+	});
+}
+
 	});
 }

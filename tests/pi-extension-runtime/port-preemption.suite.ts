@@ -1,8 +1,11 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { startServerWithSelfPreemption } from "./plannotator-browser.ts";
+import type { ExtensionRuntimeTarget } from "./targets.ts";
 
+export function registerPortPreemptionSuite(target: ExtensionRuntimeTarget): void {
+	const { startServerWithSelfPreemption } = target.browser;
+	describe(target.label, () => {
 // #1159: a fixed-port (remote mode) session whose tab was closed without a
 // decision keeps its server listening in this long-lived pi process, so the
 // next command's bind fails with "Port N in use after 5 retries". Starting a
@@ -102,7 +105,7 @@ describe("startServerWithSelfPreemption", () => {
 // forever once a session is abandoned (#1159). Source scan pins all four.
 describe("self-preemption call sites", () => {
 	test("all four server starts in plannotator-browser.ts are wrapped", () => {
-		const src = readFileSync(join(import.meta.dir, "plannotator-browser.ts"), "utf-8");
+		const src = readFileSync(join(target.canonicalRuntimeSourceRoot, "plannotator-browser.ts"), "utf-8");
 		const count = (needle: string) => src.split(needle).length - 1;
 		expect(count("await startServerWithSelfPreemption(() => startPlanReviewServer(")).toBe(2);
 		expect(count("await startServerWithSelfPreemption(() => startReviewServer(")).toBe(1);
@@ -118,7 +121,7 @@ describe("pi server stop() drains connections", () => {
 
 	for (const file of serverFiles) {
 		test(`${file} calls closeAllConnections after close`, () => {
-			const src = readFileSync(join(import.meta.dir, "server", file), "utf-8");
+			const src = readFileSync(join(target.canonicalRuntimeSourceRoot, "server", file), "utf-8");
 			const closeIdx = src.indexOf("server.close();");
 			const drainIdx = src.indexOf("server.closeAllConnections?.();");
 			expect(closeIdx).toBeGreaterThan(-1);
@@ -126,3 +129,6 @@ describe("pi server stop() drains connections", () => {
 		});
 	}
 });
+
+	});
+}

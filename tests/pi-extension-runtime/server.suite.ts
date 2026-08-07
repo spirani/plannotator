@@ -14,25 +14,27 @@ import {
 import { createServer as createNetServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import {
-  canStageFiles,
-  getGitContext,
-  getVcsContext,
-  getVcsDiffFingerprint,
-  getVcsFileContentsForDiff,
-  prepareLocalReviewDiff,
-  runGitDiff,
-  runVcsDiff,
-  stageFile,
-  startAnnotateServer,
-  startPlanReviewServer,
-  startReviewServer,
-  unstageFile,
-} from "./server.ts";
-import { WorkspaceReviewSession } from "./generated/review-workspace.ts";
-import { parseReviewArgs } from "./generated/review-args.ts";
-import { warmFileListCache } from "./generated/resolve-file.ts";
 
+import type { ExtensionRuntimeTarget } from "./targets.ts";
+
+export function registerServerSuite(target: ExtensionRuntimeTarget): void {
+	const {
+		canStageFiles,
+		getGitContext,
+		getVcsContext,
+		getVcsDiffFingerprint,
+		getVcsFileContentsForDiff,
+		prepareLocalReviewDiff,
+		runGitDiff,
+		runVcsDiff,
+		stageFile,
+		startAnnotateServer,
+		startPlanReviewServer,
+		startReviewServer,
+		unstageFile,
+	} = target.server;
+	const { WorkspaceReviewSession, parseReviewArgs, warmFileListCache } = target;
+	describe(target.label, () => {
 const tempDirs: string[] = [];
 const originalCwd = process.cwd();
 const originalHome = process.env.HOME;
@@ -1912,3 +1914,6 @@ describe("pi plan server file browser", () => {
     }
   });
 });
+
+	});
+}
